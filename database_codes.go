@@ -3,15 +3,17 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"path"
+	"runtime"
 	"strconv"
 
 	"github.com/syndtr/goleveldb/leveldb"
 )
 
-var UseDB *leveldb.DB
-
 func CreateDB() {
-	db, err := leveldb.OpenFile("./database", nil)
+	_, filename, _, _ := runtime.Caller(0)
+	dbPath := path.Dir(filename) + "./database"
+	db, err := leveldb.OpenFile(dbPath, nil)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -19,7 +21,7 @@ func CreateDB() {
 	UseDB = db
 }
 
-func PutValues() {
+func PutInitialValues() {
 	for i := 1; i <= 1000; i++ {
 		id := "SIM" + strconv.Itoa(i)
 		tempDBDetails := DBDetails{
@@ -35,7 +37,22 @@ func PutValues() {
 	}
 }
 
+func Put(key []byte, value []byte) {
+	UseDB.Put(key, value, nil)
+}
+func Get(key []byte) []byte {
+	output, getErr := UseDB.Get(key, nil)
+	if getErr != nil {
+		fmt.Println(getErr.Error() + string(key))
+	}
+	return output
+}
+
+func Delete(key []byte) {
+	UseDB.Delete(key, nil)
+}
+
 func InitializeDatabase() {
 	CreateDB()
-	PutValues()
+	PutInitialValues()
 }
