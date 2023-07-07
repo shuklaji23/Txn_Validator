@@ -4,3 +4,13 @@
 09:20:23.848208 version@stat F·[] S·0B[] Sc·[]
 09:20:23.848841 db@janitor F·2 G·0
 09:20:23.848860 db@open done T·987.066µs
+=============== Jul 6, 2023 (IST) ===============
+22:47:45.723440 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+22:47:45.723590 version@stat F·[] S·0B[] Sc·[]
+22:47:45.723596 db@open opening
+22:47:45.723614 journal@recovery F·1
+22:47:45.723895 journal@recovery recovering @1
+22:47:45.730757 memdb@flush created L0@2 N·1000 S·6KiB "SIM1,v1":"SIM999,v999"
+22:47:45.731207 version@stat F·[1] S·6KiB[6KiB] Sc·[0.25]
+22:47:45.733574 db@janitor F·3 G·0
+22:47:45.733607 db@open done T·10.003598ms

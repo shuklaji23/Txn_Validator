@@ -26,7 +26,31 @@ func myfunc() {
 	}
 }
 
-func UpdateBlock() {}
+func UpdateBlock() {
+	blockUse.DeriveHash()
+	blockUse.BlockNO++
+	blockUse.PrevBlockHash = PrevHash
+	blockUse.txns = make([]Txn, 0)
+	for len(ch) > 0 {
+		blockUse.txns = append(blockUse.txns, <-ch)
+	}
+	if len(blockUse.txns) > 0 {
+		blockUse.TimeStamp = time.Now()
+		blockUse.CommitStatus = true
+		content, err := json.Marshal(blockUse)
+		if err != nil {
+			fmt.Println("error while writing block")
+		} else {
+			var file, _ = os.OpenFile("ledger.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+			_, err := file.WriteString(string(content) + "\n")
+			fmt.Println("Processing time of Block No", blockUse.BlockNO, time.Since(now))
+			file.Close()
+			if err != nil {
+				fmt.Println(err)
+			}
+		}
+	}
+}
 
 func InitializeBlock() {
 	blockUse.TimeStamp = time.Now()
@@ -42,5 +66,5 @@ func InitializeBlock() {
 	}
 	fmt.Println("File Created Successfully")
 	file.Close()
-	// go myfunc()
+	go myfunc()
 }

@@ -12,12 +12,13 @@ import (
 )
 
 func Handler(c *gin.Context) {
-	var txn []map[string]Data
-	if err := c.ShouldBindJSON(&txn); err != nil {
+	var NewTxn []map[string]Data
+	err := c.ShouldBindJSON(&NewTxn)
+	if  err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	for _, mp2 := range txn {
+	for _, mp2 := range NewTxn {
 		Validator(mp2)
 	}
 }

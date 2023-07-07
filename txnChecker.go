@@ -31,7 +31,12 @@ func Validator(inputTxn map[string]Data) {
 		newTxn.Id = id
 		newTxn.Data = value
 		key := []byte(id)
-		data := Get(key)
+		data, err := UseDB.Get(key, nil)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
 		var tmp DBDetails
 		json.Unmarshal(data, &tmp)
 		if tmp.ver == newTxn.Data.Version {
@@ -47,6 +52,6 @@ func Validator(inputTxn map[string]Data) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		Put(key, strData)
+		UseDB.Put(key, strData, nil)
 	}
 }
